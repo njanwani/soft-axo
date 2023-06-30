@@ -50,6 +50,8 @@ void Axo::beginMotors() {
     m_timerFSR.reset();
     m_timerLoad.reset();
     m_timerHeartbeat.reset();
+
+
 }
 
 void Axo::setAngle(int val) {

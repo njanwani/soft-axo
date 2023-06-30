@@ -16,6 +16,11 @@ Lorenzo Shaikewitz, 4/17/2022
 
 /*Side definition (for IMU offsets)*/
 #define USE_ZERO_OFFSETS
+
+// ESC
+#define ESC_L                       Serial8
+#define ESC_R                       Serial7
+
 // #define USE_ONE_OFFSETS
 
 /*Suppression definition*/
@@ -25,32 +30,30 @@ Lorenzo Shaikewitz, 4/17/2022
 // #define SUPPRESS_MOTOR
 // #define SUPPRESS_LOG
 
-constexpr int BAUD{115200};
+constexpr int BAUD                      = 115200;
 
 namespace control {
-    constexpr int FSR_HIGH_THRESH{420};
-    constexpr int FSR_LOW_THRESH{100};
-    constexpr float ALPHA_FSR{0.1};
-    constexpr float ALPHA_STEP{0.92};
+    constexpr int FSR_HIGH_THRESH       = 650;
+    constexpr int FSR_LOW_THRESH        = 500;
+    constexpr float ALPHA_STEP          = 0;
+    constexpr int MOTOR_LOW             = -300;
+    constexpr int MOTOR_HIGH            = 400;
 
-    constexpr int MIN_STEP_TIME{500};
+    constexpr int MIN_STEP_TIME         = 500;
 }
 
 namespace pin {
-    // ESCs
-    constexpr short ESC_L{4};
-    constexpr short ESC_R{3};
 
     // sensors
-    constexpr short FSR{16};
-    constexpr short LOADCELL{17};
-    constexpr short POT_L{15};
-    constexpr short POT_R{14};
+    constexpr uint FSR_L                = 0;
+    constexpr uint FSR_R                = 0; 
+    constexpr short LOADCELL            = 0;
+    constexpr short ENCODER_L           = 0;
+    constexpr short ENOCDER_R           = 0;
 
-    // LEDs and e-stop
-    constexpr short LEDB{6};
-    constexpr short LEDG{7};
-    constexpr short ESTOP{23};
+    // Piezzo's and e-stop
+    constexpr short PIEZO               = 6;
+    constexpr short ESTOP               = 23;
 }
 
 
