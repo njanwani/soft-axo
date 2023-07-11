@@ -10,7 +10,7 @@ private:
     int high;
     HardwareSerial *port;
 public:
-    Motor(HardwareSerial *port, int low_lim, int high_lim);
+    Motor(HardwareSerial *port, int low_lim, int high_lim, size_t MOTOR_BAUD);
     void begin();
     void move(int pos);
 };

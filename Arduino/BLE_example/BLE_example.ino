@@ -3,8 +3,16 @@
 #include "Adafruit_BluefruitLE_UART.h"
 #include "BluefruitConfig.h"
 
+#define BUFSIZE                        128   // Size of the read buffer for incoming data
+#define VERBOSE_MODE                   false  // If set to 'true' enables debug output
+
+#define BLUEFRUIT_SWUART_RXD_PIN       9    // Required for software serial!
+#define BLUEFRUIT_SWUART_TXD_PIN       10   // Required for software serial!
+#define BLUEFRUIT_UART_CTS_PIN         11   // Required for software serial!
+#define BLUEFRUIT_UART_RTS_PIN         -1   // Optional, set to -1 if unused
+#define BLUEFRUIT_HWSERIAL_NAME      Serial8
+#define BLUEFRUIT_UART_MODE_PIN        33    // Set to -1 if unused
 #define FACTORYRESET_ENABLE         1
-#define MINIMUM_FIRMWARE_VERSION    "0.6.6"
 
 Adafruit_BluefruitLE_UART ble(BLUEFRUIT_HWSERIAL_NAME, 4);
 

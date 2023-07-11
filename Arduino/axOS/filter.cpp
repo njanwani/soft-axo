@@ -1,12 +1,15 @@
 #include "filter.h"
 
-Filter::Filter(float x_init, float T, float LOW_VAL, float HIGH_VAL, float low_th, float high_th) {
+Filter::Filter() {}
+
+void Filter::begin(float x_init, float T, float LOW_VAL, float HIGH_VAL, float low_th, float high_th) {
     Filter::x = x_init;
     Filter::T = T;
     Filter::LOW_VAL = LOW_VAL;
     Filter::HIGH_VAL = HIGH_VAL;
     Filter::low_th = low_th;
     Filter::high_th = high_th;
+    Filter::x_th = Filter::x;
     get_threshold_x();
 }
 

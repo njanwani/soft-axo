@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include "motor.h"
 
-Motor::Motor(HardwareSerial *port, int low_lim, int high_lim) {
-    Serial.begin(9600);
+Motor::Motor(HardwareSerial *port, int low_lim, int high_lim, size_t MOTOR_BAUD) {
+    Serial.begin(MOTOR_BAUD);
     Motor::port = port;
     Motor::low = low_lim;
     Motor::high = high_lim;
