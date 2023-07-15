@@ -25,9 +25,9 @@ class SerialMonitor:
 
         axo = None
         for device in devices:
-            if device.name == device_name:
+            if devices[device][0].name == device_name:
                 print(f'{device_name} found!')
-                return device.address
+                return devices[device][0].address
             
         return None
 
@@ -57,7 +57,7 @@ class SerialMonitor:
 
         try:
             print(Fore.CYAN + 'Connecting to device...')
-            address = await asyncio.run(self.detect_device(self.DEVICE))
+            address = await self.detect_device(self.DEVICE)
             await self.ble.connect(address, "public", 10.0)
             await self.ble.setup_chars(WRITE_UUID, READ_UUID, "rw")
             print(Fore.GREEN + f'Connected to {self.ble.dev.address}!')
@@ -89,4 +89,4 @@ class SerialMonitor:
 
 
 sm = SerialMonitor(ADAPTER=None, DEVICE='AXO', FILENAME='save.txt')
-sm.spin(output=False)
+sm.spin(output=True)
