@@ -6,17 +6,22 @@
 
 // General constants
 constexpr size_t MONITOR_BAUD   = 115200;
-constexpr size_t NUM_KEYS       = 9;
+constexpr size_t NUM_KEYS       = 15;
 constexpr size_t MAX_KEY_SIZE   = 50;
 
 
+//IMU constants
+#define IMU_SHIN_L              Serial5
+#define IMU_SHIN_R              Serial4
+
 // ESC and motor constants
-#define ESC_L                   Serial8
-#define ESC_R                   Serial7
+#define ESC_L                   Serial1
+#define ESC_R                   Serial2
 constexpr size_t ESC_BAUD       = 9600;
 constexpr int MOTOR_LOW         = -300;
 constexpr int MOTOR_HIGH        = 400;
 constexpr size_t MOTOR_BAUD     = 9600;
+
 
 // Control constants
 constexpr int FSR_HIGH_THRESH   = 650;

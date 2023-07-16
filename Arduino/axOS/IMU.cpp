@@ -4,7 +4,7 @@
 
 
 IMU::IMU() {
-    IMU::online = false;
+    IMU::polled = false;
     IMU::yaw = 0;
     IMU::roll = 0;
     IMU::pitch = 0;
@@ -12,26 +12,30 @@ IMU::IMU() {
 
 bool IMU::begin(Stream *port) {
     ((HardwareSerial *)port)->begin(115200); // BAUD rate specified by BNO085 datasheet
-    if (!IMU::rvc.begin(port)) {
+    // Serial5.begin(115200);
+    if (!(IMU::rvc.begin(port))) {
         return false;
     }
     return true;
 }
 
-void IMU::read() {
+void IMU::poll() {
+    if (IMU::polled) return;
     BNO08x_RVC_Data heading;
-    if (rvc.read(&heading)) {
-        IMU::online = true;
-        IMU::yaw = heading.yaw;
-        IMU::pitch = heading.pitch;
-        IMU::roll = heading.roll;
-    } else {
-        IMU::online = false;
+    if ((IMU::rvc.read(&heading))) {
+        IMU::polled = true;
+        IMU::yaw = (float)heading.yaw;
+        IMU::pitch = (float)heading.pitch;
+        IMU::roll = (float)heading.roll;
     }
 }
 
-bool IMU::is_online() {
-    return IMU::online;
+void IMU::reset() {
+    IMU::polled = false;
+}
+
+bool IMU::finished() {
+    return IMU::polled;
 }
 
 float IMU::get_yaw() {

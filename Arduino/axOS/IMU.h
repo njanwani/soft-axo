@@ -7,15 +7,16 @@ class IMU {
 
     private:
         Adafruit_BNO08x_RVC rvc;
-        bool online;
+        bool polled;
         float yaw;
         float pitch;
         float roll;
     public:
         IMU();
         bool begin(Stream *port);
-        void read();
-        bool is_online();
+        void poll();
+        bool finished();
+        void reset();
         float get_yaw();
         float get_pitch();
         float get_roll();

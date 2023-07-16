@@ -40,7 +40,6 @@ void Logger::log(const char *keyname, float value) {
     for (int i = 0; i < Logger::idx; i++) {
         if (strcmp(keyname, Logger::key + i * Logger::MAX_KEY_LENGTH) == 0) {
             Logger::values[i] = value;
-            Serial.println();
             break;
         }
     }
@@ -66,7 +65,7 @@ void Logger::write_to_SD() {
     Logger::datafile = SD.open(Logger::filename, FILE_WRITE);
     if (Logger::datafile) {
         for (uint16_t i = 0; i < Logger::idx; i++) {
-            Logger::datafile.printf("%f,", Logger::values[i]);
+            Logger::datafile.printf("%.2f,", Logger::values[i]);
         }
         Logger::datafile.println();
         Logger::datafile.close();
