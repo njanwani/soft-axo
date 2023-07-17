@@ -4,6 +4,17 @@
 #include <Arduino.h>
 #include <SD.h>
 
+#define SD_FAT_TYPE 3
+#ifndef SDCARD_SS_PIN
+const uint8_t SD_CS_PIN = SS;
+#else 
+const uint8_t SD_CS_PIN = SDCARD_SS_PIN;
+#endif 
+#define SPI_CLOCK SD_SCK_MHZ(50)
+#define SD_CONFIG SdioConfig(FIFO_SDIO)
+#define FILE_SIZE 5000000 // 5Mb
+#define error(s) sd.errorHalt(&Serial, F(s))
+
 class Logger {
 
 private:
@@ -14,7 +25,8 @@ private:
     size_t MAX_KEY_LENGTH;
     size_t CHIP_SELECT;
     size_t BAUD;
-    File datafile;
+    FsFile file;
+    SdFs sd;
     const char *filename;
 public:
     Logger(size_t elements, size_t MAX_KEY_LENGTH, size_t CHIP_SELECT, size_t BAUD);

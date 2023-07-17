@@ -37,7 +37,7 @@ void setup() {
   shin_L.begin(&IMU_SHIN_L);
   shin_R.begin(&IMU_SHIN_R);
   logger.begin("data.csv");
-  rate.begin(0, 50, 0, 1, 0, 1);
+  rate.begin(10, 50, 0, 1, 0, 1);
   Serial.begin(9600);
   Serial.println("Beginning axOS!");
   logger.add_key("Time");
@@ -47,12 +47,12 @@ void setup() {
   logger.add_key("IMU_SHIN_R_YAW");
   logger.add_key("IMU_SHIN_R_PITCH");
   logger.add_key("IMU_SHIN_R_ROLL");
-  logger.add_key("IMU_FOOT_L_YAW");
-  logger.add_key("IMU_FOOT_L_PITCH");
-  logger.add_key("IMU_FOOT_L_ROLL");
-  logger.add_key("IMU_FOOT_R_YAW");
-  logger.add_key("IMU_FOOT_R_PITCH");
-  logger.add_key("IMU_FOOT_R_ROLL");
+  //  logger.add_key("IMU_FOOT_L_YAW");
+  //  logger.add_key("IMU_FOOT_L_PITCH");
+  //  logger.add_key("IMU_FOOT_L_ROLL");
+  //  logger.add_key("IMU_FOOT_R_YAW");
+  //  logger.add_key("IMU_FOOT_R_PITCH");
+  //  logger.add_key("IMU_FOOT_R_ROLL");
   Serial.println("PRINTING LOGS:");
   logger.print_headers();
   delay(500);
@@ -61,6 +61,17 @@ void setup() {
 }
 
 void loop() {
+  //  Serial.println("Success?");
+  //  delay(1000);
+  if (Serial.available()) {
+    char c = Serial.read();
+    if (c == 'q') {
+      Serial.println("Shutting down...");
+      logger.shutdown();
+      Serial.println("Power off when ready");
+      while (1) {}
+    }
+  }
   while (!(shin_L.finished() && shin_R.finished()) || t - (float)millis() > 15) {
     shin_L.poll();
     shin_R.poll();
