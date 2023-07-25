@@ -15,27 +15,30 @@ Logger::Logger(size_t elements, size_t MAX_KEY_LENGTH, size_t CHIP_SELECT, size_
 }
 
 
-void Logger::begin(const char *filename) {
+bool Logger::begin(const char *filename) {
     Logger::values = (float *)calloc(Logger::elements, sizeof(float));
     Logger::key = (char *)calloc(Logger::elements, MAX_KEY_LENGTH * sizeof(char));
     Serial.begin(Logger::BAUD);
     if (!Logger::sd.begin(SD_CONFIG)) {
-        Logger::sd.initErrorHalt(&Serial);
-        return;
+        // Logger::sd.initErrorHalt(&Serial);
+        Serial.println("LOGGER: Could initialize card. Is it inserted?");
+        return false;
     }
 
     Logger::filename = filename;
     Serial.printf("Card initialized. Writing to %s\n", Logger::filename);
     Logger::sd.remove(filename);
     if (!Logger::file.open(Logger::filename, O_RDWR | O_CREAT | O_TRUNC)) {
-        error("open failed");
-        return;
+        Serial.println("LOGGER: Could not open file.");
+        return false;
     }
     // Logger::file.truncate(0);
     if (!Logger::file.preAllocate(FILE_SIZE)) {
-        error("preAllocate failed");
-        return;
+        Serial.println("LOGGER: Pre-allocation of file failed. Is the SD card full?");
+        return false;
     }
+
+    return true;
 }
 
 
@@ -68,7 +71,7 @@ void Logger::print_headers() {
     }
     c += snprintf(buf + c, 2, "\n");
     if (file.write(buf, c) != c) {
-        error("headers: write failed");
+        Serial.println("LOGGER: write failed");
     }
 }
 
@@ -92,7 +95,7 @@ void Logger::write_to_SD() {
     }
     c += snprintf(buf + c, 2, "\n");
     if (file.write(buf, c) != c) {
-        error("values: write failed");
+        Serial.println("LOGGER: write failed");
     }
 }
 

@@ -14,6 +14,7 @@ bool IMU::begin(Stream *port) {
     ((HardwareSerial *)port)->begin(115200); // BAUD rate specified by BNO085 datasheet
     // Serial5.begin(115200);
     if (!(IMU::rvc.begin(port))) {
+        Serial.println("IMU: Could not find BNO085. Check wiring?");
         return false;
     }
     return true;

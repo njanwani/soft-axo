@@ -13,6 +13,8 @@ constexpr size_t MAX_KEY_SIZE   = 50;
 //IMU constants
 #define IMU_SHIN_L              Serial5
 #define IMU_SHIN_R              Serial4
+#define IMU_FOOT_L              Serial3
+#define IMU_FOOT_R              Serial8
 
 // ESC and motor constants
 #define ESC_L                   Serial1
@@ -34,7 +36,7 @@ constexpr size_t T_H            = 100;
 constexpr uint FSR_L            = A0;
 constexpr uint FSR_R            = 0; 
 constexpr short LOADCELL        = 0;
-constexpr short PIEZO           = 6;
+constexpr short PIEZO           = 2;
 constexpr short ESTOP           = 23;
 
 

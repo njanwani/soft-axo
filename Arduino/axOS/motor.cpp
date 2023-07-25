@@ -8,12 +8,13 @@ Motor::Motor(HardwareSerial *port, int low_lim, int high_lim, size_t MOTOR_BAUD)
     Motor::high = high_lim;
 }
 
-void Motor::begin() {
+bool Motor::begin() {
     port->begin(9600);
     delay(100);
     Motor::port->printf("[L%d]\n", Motor::low);
     delay(100);
     Motor::port->printf("[H%d]\n", Motor::high);
+    return true;
 }
 
 void Motor::move(int pos) {

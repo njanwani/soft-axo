@@ -10,8 +10,8 @@
 #define BLUEFRUIT_SWUART_TXD_PIN       10   // Required for software serial!
 #define BLUEFRUIT_UART_CTS_PIN         11   // Required for software serial!
 #define BLUEFRUIT_UART_RTS_PIN         -1   // Optional, set to -1 if unused
-#define BLUEFRUIT_HWSERIAL_NAME      Serial8
-#define BLUEFRUIT_UART_MODE_PIN        33    // Set to -1 if unused
+#define BLUEFRUIT_HWSERIAL_NAME      Serial7
+#define BLUEFRUIT_UART_MODE_PIN        30    // Set to -1 if unused
 #define FACTORYRESET_ENABLE         1
 
 Adafruit_BluefruitLE_UART ble(BLUEFRUIT_HWSERIAL_NAME, 4);

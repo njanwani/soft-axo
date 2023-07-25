@@ -33,9 +33,11 @@ class SerialMonitor:
 
     
     def receive_callback(self, value: bytes):
+        self.file = open(self.FILENAME, 'a')
         msg = value.decode()
         if self.output: print('Recieved value:\n' + value.decode())
-        self.file.write(msg + '\n')
+        self.file.write(msg)
+        self.file.close()
 
 
     async def send(self):
@@ -75,6 +77,7 @@ class SerialMonitor:
         try:
             self.output = output
             self.file = open(self.FILENAME, 'w')
+            self.file.close()
             logging.basicConfig(level=logging.WARNING)
             asyncio.run(self.main())
         except KeyboardInterrupt:
@@ -89,4 +92,4 @@ class SerialMonitor:
 
 
 sm = SerialMonitor(ADAPTER=None, DEVICE='AXO', FILENAME='save.txt')
-sm.spin(output=True)
+sm.spin(output=False)

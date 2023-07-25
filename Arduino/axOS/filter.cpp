@@ -2,7 +2,7 @@
 
 Filter::Filter() {}
 
-void Filter::begin(float x_init, float T, float LOW_VAL, float HIGH_VAL, float low_th, float high_th) {
+bool Filter::begin(float x_init, float T, float LOW_VAL, float HIGH_VAL, float low_th, float high_th) {
     Filter::x = x_init;
     Filter::T = T;
     Filter::LOW_VAL = LOW_VAL;
@@ -11,6 +11,7 @@ void Filter::begin(float x_init, float T, float LOW_VAL, float HIGH_VAL, float l
     Filter::high_th = high_th;
     Filter::x_th = Filter::x;
     get_threshold_x();
+    return true;
 }
 
 float Filter::read(float u, float dt) {

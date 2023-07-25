@@ -5,75 +5,78 @@
 Bluetooth::Bluetooth(HardwareSerial *port,
                       bool verbose,
                       int mode_pin,
-                      bool factory_reset) : ble(*port, 4) {
+                      bool factory_reset) : ble(*port, 5) {
     Bluetooth::mode_pin = mode_pin;
     Bluetooth::verbose = verbose;
     Bluetooth::factory_reset = factory_reset;
 }
 
-void Bluetooth::error(const __FlashStringHelper*err) {
-  Serial.println(err);
-  while (1);
+void Bluetooth::print_helper(const char *str) {
+    if (Bluetooth::verbose) {
+        Serial.println(str);
+    }
 }
 
-void Bluetooth::begin(size_t baud) {
+bool Bluetooth::begin(size_t baud) {
     pinMode(Bluetooth::mode_pin, OUTPUT);
     digitalWrite(Bluetooth::mode_pin, HIGH);
     delay(100);
   
-    Serial.begin(baud);
-    Serial.println(F("Adafruit Bluefruit AXO"));
-    Serial.println(F("---------------------------------------"));
+//    Serial.begin(baud);
+    print_helper("Adafruit Bluefruit AXO");
+    print_helper("---------------------------------------");
 
     /* Initialise the module */
-    Serial.print(F("Initialising the Bluefruit LE module: "));
+    print_helper("Initialising the Bluefruit LE module: ");
 
-    if ( !Bluetooth::ble.begin(Bluetooth::verbose) )
-    {
-    Bluetooth::error(F("ERROR: Couldn't find Bluefruit, make sure it's in CoMmanD mode & check wiring."));
+    if (!Bluetooth::ble.begin(Bluetooth::verbose)) {
+        Serial.println("BLUETOOTH: Couldn't find Bluefruit, make sure it's in CoMmanD mode & check wiring.");
+        return false;
     }
-    Serial.println( F("OK!") );
+    print_helper("OK!");
 
-    if ( Bluetooth::factory_reset )
-    {
-    /* Perform a factory reset to make sure everything is in a known state */
-    Serial.println(F("Performing a factory reset: "));
-    if ( ! Bluetooth::ble.factoryReset() ) {
-        Bluetooth::error(F("ERROR: Couldn't factory reset."));
-    }
+    if (Bluetooth::factory_reset) {
+        /* Perform a factory reset to make sure everything is in a known state */
+        print_helper("Performing a factory reset: ");
+        if (!Bluetooth::ble.factoryReset()) {
+            Serial.println("BLUETOOTH: Couldn't factory reset.");
+        }
     }
 
     /* Disable command echo from Bluefruit */
     Bluetooth::ble.echo(false);
 
-    Serial.println("Requesting Bluefruit info:");
+    print_helper("Requesting Bluefruit info:");
     /* Print Bluefruit information */
     Bluetooth::ble.info();
     Bluetooth::ble.setMode(BLUEFRUIT_MODE_DATA);
 
     /* Change the device name to make it easier to find */
-    Serial.println(F("Setting device name to 'AXO something': "));
-    Bluetooth::ble.sendCommandCheckOK(F( "AT+GAPDEVNAME=AXO-LEFT" ));
+    print_helper("Setting device name to 'AXO':");
+    Bluetooth::ble.sendCommandCheckOK(F( "AT+GAPDEVNAME=AXO" ));
     Bluetooth::ble.sendCommandCheckOK(F( "AT+BleHIDEn=On" ));
     Bluetooth::ble.sendCommandCheckOK(F( "AT+BleKeyboardEn=On"  ));
 
-    if (! Bluetooth::ble.sendCommandCheckOK(F( "AT+GAPDEVNAME=AXO" )) ) {
-    Bluetooth::error(F("ERROR: Could not set device name."));
+    if (!Bluetooth::ble.sendCommandCheckOK(F( "AT+GAPDEVNAME=AXO")) ) {
+        Serial.println("BLUETOOTH: Could not set device name.");
     }
 
     /* Add or remove service requires a reset */
-    Serial.println(F("Performing a SW reset."));
-    if (! Bluetooth::ble.reset() ) {
-    Bluetooth::error(F("ERROR: Couldn't reset."));
+    print_helper("Performing a SW reset.");
+    if (!Bluetooth::ble.reset()) {
+        Serial.println("BLUETOOTH: Couldn't reset.");
     }
 
-    Serial.println("Success! Starting...");
+    print_helper("Success! Starting...");
     digitalWrite(Bluetooth::mode_pin, LOW);
     delay(100);
+    return true;
 }
 
-void Bluetooth::write(char c) {
-    Bluetooth::ble.write(c);
+void Bluetooth::write(const char *c, int len) {
+    for (int i = 0; i < len; i++) {
+        Bluetooth::ble.write(c[i]);
+    }
 }
 
 char Bluetooth::read() {
@@ -83,4 +86,3 @@ char Bluetooth::read() {
 bool Bluetooth::available() {
     return Bluetooth::ble.available();
 }
-

@@ -20,11 +20,11 @@ private:
     bool factory_reset;
 public:
     Bluetooth(HardwareSerial *port, bool verbose, int mode_pin, bool factory_reset);
-    void begin(size_t baud);
-    void write(char c);
+    bool begin(size_t baud);
+    void write(const char *c, int len);
     char read();
-    void error(const __FlashStringHelper*err);
     bool available();
+    void print_helper(const char *str);
 };
 
 #endif

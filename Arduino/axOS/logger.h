@@ -13,7 +13,6 @@ const uint8_t SD_CS_PIN = SDCARD_SS_PIN;
 #define SPI_CLOCK SD_SCK_MHZ(50)
 #define SD_CONFIG SdioConfig(FIFO_SDIO)
 #define FILE_SIZE 5000000 // 5Mb
-#define error(s) sd.errorHalt(&Serial, F(s))
 
 class Logger {
 
@@ -30,7 +29,7 @@ private:
     const char *filename;
 public:
     Logger(size_t elements, size_t MAX_KEY_LENGTH, size_t CHIP_SELECT, size_t BAUD);
-    void begin(const char *filename);
+    bool begin(const char *filename);
     void add_key(const char *keyname);
     void log(const char *keyname, float value);
     void print_headers();

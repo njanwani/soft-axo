@@ -5,7 +5,7 @@
 class Filter {
     public:
         Filter();
-        void begin(float x_init, float T, float LOW_VAL, float HIGH_VAL, float low_th, float high_th);
+        bool begin(float x_init, float T, float LOW_VAL, float HIGH_VAL, float low_th, float high_th);
         float read(float u, float dt);
         float get_x();
         float get_threshold_x();
